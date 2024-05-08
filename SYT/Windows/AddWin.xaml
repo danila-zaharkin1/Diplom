@@ -1,0 +1,76 @@
+﻿<Window x:Class="SYT.Windows.AddWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SYT.Windows"
+        mc:Ignorable="d"
+        Title="AddWin" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="Width" Value="500"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="HorizontalAlignment" Value="left"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Номер поставки" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="Дата поставки" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Text="Поставщик" Grid.Row="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Text="Сумма" Grid.Row="3" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <TextBox x:Name="TextBoxNumber" Text="{Binding Number}" Grid.Column="1"/>
+        <TextBox x:Name="TextBoxDate" Text="{Binding Supply_Date}" Grid.Column="1" Grid.Row="1" MaxLength="200"></TextBox>
+        <TextBox x:Name="TextBoxSupplier" Text="{Binding Supplier}" Grid.Column="1" Grid.Row="2"/>
+        <TextBox x:Name="TextBoxSum" Text="{Binding Amount}" Grid.Column="1" Grid.Row="3" Width="200"></TextBox>
+        <Button
+            Name="BtnSave"
+            Click="BtnSave_Click"
+            Style="{DynamicResource ButtonStyle}"
+            Content="Сохранить"
+            Background="Black"
+            Foreground="White"
+            FontSize="20"
+            Width="250"
+            Height="60"
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Margin="-300,0,0,0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="30"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button
+            Style="{DynamicResource ButtonStyle}"
+            Content="Отмена"
+            Name="BtnCancel"
+            Click="BtnCancel_Click"
+            Background="Black"
+            Foreground="White"
+            FontSize="20"
+            Width="250"
+            Height="60"
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Margin="300,0,0,0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="30"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</Window>

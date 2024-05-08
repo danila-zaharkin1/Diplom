@@ -1,0 +1,116 @@
+﻿<Window x:Class="SYT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SYT"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="MainWindow" Height="1024" Width="1440">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Source="Images\fon.jpg" Opacity="0.7" Width="auto" Height="1024" Grid.Row="0" Grid.RowSpan="6" Grid.ColumnSpan="3"/>
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <Label
+                FontSize="30"
+                Content="P.M.S"
+                Foreground="White"
+                FontFamily="/fonts/#inika"/>            
+        </WrapPanel>
+        <WrapPanel
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="40,0,0,0"
+            VerticalAlignment="Center">
+            <TextBox
+                Style="{DynamicResource TextBoxStyle}"
+                GotFocus="TextBoxEmail_GotFocus"
+                LostFocus="TextBoxEmail_LostFocus"
+                Name="TextBoxEmail"  
+                Text="Введите номер..."
+                Foreground="Black"
+                BorderBrush="Black"
+                FontSize="18"
+                BorderThickness="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Height="53"
+                Width="420" >
+                <TextBox.Resources>
+                    <Style
+                        TargetType="Border">
+                        <Setter
+                                Property="CornerRadius" Value="30"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </WrapPanel>
+        <WrapPanel
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="40,0,0,0">
+            <TextBox
+                Style="{DynamicResource TextBoxStyle}"
+                GotFocus="TextBoxPassword_GotFocus"   
+                LostFocus="TextBoxPassword_LostFocus"
+                Name="TextBoxPassword"               
+                Height="53"
+                Width="420"
+                Text="Введите пароль..."
+                BorderThickness="2"
+                BorderBrush="Black"
+                Foreground="Black"
+                FontSize="18"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
+                <TextBox.Resources>
+                    <Style
+                        TargetType="Border">
+                        <Setter
+                                Property="CornerRadius" Value="30"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </WrapPanel>
+        <WrapPanel
+            Margin="40,8,0,0"
+            Grid.Row="4"
+            Grid.Column="1">
+            <Button
+                Style="{DynamicResource ButtonStyle}"
+                x:Name="Button_Enter"
+                Click="Button_Enter_Click"
+                FontSize="18"
+                Content="Войти"
+                Height="53"
+                Width="420"
+                BorderThickness="2"
+                BorderBrush="Black"
+                Foreground="Black"
+                Background="White">
+                <Button.Resources>
+                    <Style
+                        TargetType="Border">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</Window>
