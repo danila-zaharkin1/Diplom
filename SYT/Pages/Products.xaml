@@ -7,7 +7,16 @@
       mc:Ignorable="d" 
       d:DesignHeight="1024" d:DesignWidth="1440"
       Title="Products" Background="White">
-
+    <Page.Resources>
+        <DataTemplate x:Key="TovariTemplate">
+            <WrapPanel>
+                <TextBlock Text="{Binding Barcode}" Width="300" FontSize="20"/>
+                <TextBlock Text="{Binding Product_Name}" Width="430" FontSize="20"/>
+                <TextBlock Text="{Binding Price, StringFormat={}{0} ₽}" Width="300" FontSize="20"/>
+                <TextBlock Text="{Binding Quantity, StringFormat={}{0} шт.}" Width="170" FontSize="20"/>
+            </WrapPanel>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -29,15 +38,45 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <WrapPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="1200"
+            Height="30"
+            VerticalAlignment="Bottom"
+            Margin="10 0 0 0">
+            <TextBlock
+                Text="Код товара"
+                FontSize="20"
+                Width="300"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Название"
+                FontSize="20"
+                Width="430"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Цена за шт"
+                FontSize="20"
+                Width="300"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Количество шт"
+                FontSize="20"
+                Width="170"
+                FontWeight="Bold"></TextBlock>
+        </WrapPanel>
+        <WrapPanel
             Grid.Row="2"
             Grid.Column="1"
             Grid.RowSpan="9"
             HorizontalAlignment="Center">
             <ListBox
+                Name="ProductsList"
                 Width="1200"
                 Height="500"
                 BorderBrush="Black"
-                BorderThickness="1"></ListBox>
+                BorderThickness="1"
+                ItemTemplate="{StaticResource TovariTemplate}"></ListBox>
         </WrapPanel>
         <WrapPanel
             Grid.Row="10"
@@ -52,9 +91,26 @@
                 FontFamily="/fonts/#inika"></Label>
             <TextBlock
                 Name="TextBlock_Tovary"
-                Text="200"
+                Text=""
                 FontSize="20"
                 Margin="0,25,0,0"
+                Width="auto"></TextBlock>
+        </WrapPanel>
+        <WrapPanel
+            Grid.Row="11"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Width="1200">
+            <Label
+                Content="Товаров на сумму :"
+                Foreground="Black"
+                FontSize="20"
+                FontFamily="/fonts/#inika"></Label>
+            <TextBlock
+                Name="TextBlock_Summa"
+                Text=""
+                Margin="0 5 0 0"
+                FontSize="20"
                 Width="auto"></TextBlock>
         </WrapPanel>
         <WrapPanel 
@@ -67,40 +123,7 @@
                 FontFamily="/fonts/#inika"
                 Margin="40,14,0,0"
                 Foreground="White"></Label>
-        </WrapPanel>
-        <WrapPanel
-            Grid.Row="0"
-            Grid.Column="1"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
-            <Button
-                Content="День"
-                Foreground="Black"
-                Background="White"
-                FontSize="16"
-                FontFamily="/fonts/#inika"
-                Width="150"
-                Height="30"
-                BorderThickness="0"></Button>
-            <Button
-                Content="Неделя"
-                Foreground="Black"
-                Background="White"
-                FontSize="16"
-                FontFamily="/fonts/#inika"
-                Width="150"
-                Height="30"
-                BorderThickness="1,0,1,0"></Button>
-            <Button
-                Content="Месяц"
-                Foreground="Black"
-                Background="White"
-                FontSize="16"
-                FontFamily="/fonts/#inika"
-                Width="150"
-                Height="30"
-                BorderThickness="0"></Button>
-        </WrapPanel>
+        </WrapPanel>        
         <StackPanel 
             Grid.Row="1"
             Grid.RowSpan="2">

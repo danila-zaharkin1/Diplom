@@ -25,6 +25,25 @@ namespace SYT.Pages
         public Products()
         {
             InitializeComponent();
+            ProductsList.ItemsSource = db.Products.OrderBy(p => p.Barcode).ToList();
+
+            using (var db = new SYTEntities())
+            {
+                // Получаем общее количество товаров
+                int totalQuantity = db.Products.Sum(p => p.Quantity).GetValueOrDefault(); // Используем метод GetValueOrDefault() для получения значения типа int
+
+                // Отображаем общее количество товаров в TextBlock
+                TextBlock_Tovary.Text = $"{totalQuantity} штук";
+
+                // Получаем общую сумму товаров
+                decimal? totalSum = db.Products.Sum(p => p.Price * p.Quantity); // Обратите внимание на тип decimal?
+
+                // Если totalSum равно null, устанавливаем значение по умолчанию равным 0
+                decimal totalSumValue = totalSum ?? 0;
+
+                // Отображаем общую сумму товаров в TextBlock
+                TextBlock_Summa.Text = $"{totalSumValue} ₽";
+            }
         }
 
         private void BtnPostavki_Click(object sender, RoutedEventArgs e)

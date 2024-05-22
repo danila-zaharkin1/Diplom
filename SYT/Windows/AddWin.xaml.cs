@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,30 @@ namespace SYT.Windows
     public partial class AddWin : Window
     {
         SYTEntities db = new SYTEntities();
-        private Supplies newSupplies;
+        public ObservableCollection<Products> ProductsCollection { get; set; }
+
+        // Свойство для доступа к листбоксу TovariAddList
         public AddWin()
         {
             InitializeComponent();
-        }
+            ProductsCollection = new ObservableCollection<Products>();
+            TovariAddList.ItemsSource = ProductsCollection;
+        }        
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             string number = TextBoxNumber.Text;
-            DateTime date = DateTime.Now; // Получаем текущую дату
+            DateTime date;
+            if (string.IsNullOrEmpty(TextBoxDate.Text))
+            {
+                // Если поле даты пустое, использовать текущую дату
+                date = DateTime.Now;
+            }
+            else
+            {
+                // Иначе парсировать дату из TextBoxDate
+                date = DateTime.Parse(TextBoxDate.Text);
+            }
             string supplier = TextBoxSupplier.Text;
             decimal sum;
 
@@ -73,16 +88,37 @@ namespace SYT.Windows
             // Добавляем новый объект в базу данных и сохраняем изменения
             db.Supplies.Add(newSupplies);
             db.SaveChanges();
+
+            // Обновляем связь товаров с поставкой
+            foreach (var product in ProductsCollection)
+            {
+                product.Supply_Number = newSupplies.Supply_Number;
+                db.Entry(product).State = System.Data.Entity.EntityState.Modified;
+            }
+
+            db.SaveChanges();
+
             MessageBox.Show("Поставка упешно внесена в базу");
 
             // Закрываем окно
-            Close();
+            Close();            
         }
 
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void BtnAddTovar_Click(object sender, RoutedEventArgs e)
+        {
+            AddWinTovari addWinTovari = new AddWinTovari(this, ProductsCollection);
+            addWinTovari.ShowDialog();
+        }
+        public void UpdateTotalSum()
+        {
+            decimal totalSum = ProductsCollection.Sum(p => (p.Price ?? 0) * (p.Quantity ?? 0));
+            TextBoxSum.Text = totalSum.ToString("0.00"); // Форматируем как десятичное число с двумя знаками после запятой
         }
     }
 }

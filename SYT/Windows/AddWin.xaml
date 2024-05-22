@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SYT.Windows"
         mc:Ignorable="d"
-        Title="AddWin" Height="450" Width="800">
+        Title="Окно добавления поставок" Height="600" Width="800">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="BorderBrush" Value="Black"></Setter>
@@ -13,6 +13,14 @@
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="HorizontalAlignment" Value="left"></Setter>
         </Style>
+        <DataTemplate x:Key="ProductsAddTemplate">
+            <WrapPanel>
+                <TextBlock Text="{Binding Barcode}" Width="175" FontSize="20"/>
+                <TextBlock Text="{Binding Product_Name}" Width="175" FontSize="20"/>
+                <TextBlock Text="{Binding Price, StringFormat={}{0} ₽}" Width="175" FontSize="20"/>
+                <TextBlock Text="{Binding Quantity, StringFormat={}{0} шт.}" Width="175" FontSize="20"/>
+            </WrapPanel>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -26,15 +34,77 @@
             <ColumnDefinition Width="250"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Номер поставки" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBlock Text="Дата поставки" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBlock Text="Поставщик" Grid.Row="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBlock Text="Сумма" Grid.Row="3" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBox x:Name="TextBoxNumber" Text="{Binding Number}" Grid.Column="1"/>
-        <TextBox x:Name="TextBoxDate" Text="{Binding Supply_Date}" Grid.Column="1" Grid.Row="1" MaxLength="200"></TextBox>
-        <TextBox x:Name="TextBoxSupplier" Text="{Binding Supplier}" Grid.Column="1" Grid.Row="2"/>
-        <TextBox x:Name="TextBoxSum" Text="{Binding Amount}" Grid.Column="1" Grid.Row="3" Width="200"></TextBox>
-        <Button
+        <StackPanel
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            VerticalAlignment="Top"
+            Margin="0 22 0 0">
+            <TextBlock Text="Номер поставки" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10"/>
+            <TextBlock Text="Дата поставки" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Поставщик" Grid.Row="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 18 0 10"></TextBlock>
+            <TextBlock Text="Сумма" Grid.Row="3" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 0"></TextBlock>            
+        </StackPanel>
+        <StackPanel
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            VerticalAlignment="Top"
+            Margin="0 10 0 0">
+            <TextBox x:Name="TextBoxNumber" Text="{Binding Number}" Grid.Column="1" Margin="0 10 0 10"/>
+            <TextBox x:Name="TextBoxDate" Text="{Binding Supply_Date}" Grid.Column="1" Grid.Row="1" MaxLength="200"></TextBox>
+            <TextBox x:Name="TextBoxSupplier" Text="{Binding Supplier}" Grid.Column="1" Grid.Row="2" Margin="0 10 0 10"/>
+            <TextBox x:Name="TextBoxSum" Text="{Binding Amount}" Grid.Column="1" Grid.Row="3" Width="200"></TextBox>
+        </StackPanel>
+        <WrapPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Width="700"
+            Height="30"
+            VerticalAlignment="Bottom"
+            Margin="10 0 0 0">
+            <TextBlock
+                Text="Код товара"
+                FontSize="20"
+                Width="175"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Название"
+                FontSize="20"
+                Width="175"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Цена за шт"
+                FontSize="20"
+                Width="175"
+                FontWeight="Bold"></TextBlock>
+            <TextBlock
+                Text="Количество шт"
+                FontSize="20"
+                Width="175"
+                FontWeight="Bold"></TextBlock>
+        </WrapPanel>
+        <WrapPanel
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center">
+            <ListBox
+                x:Name="TovariAddList"
+                Width="700"
+                Height="200"
+                BorderThickness="1"
+                BorderBrush="Black"
+                ItemTemplate="{StaticResource ProductsAddTemplate}"></ListBox>
+        </WrapPanel>
+        <StackPanel
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            Margin="0 0 50 0">
+            <Button
             Name="BtnSave"
             Click="BtnSave_Click"
             Style="{DynamicResource ButtonStyle}"
@@ -43,17 +113,14 @@
             Foreground="White"
             FontSize="20"
             Width="250"
-            Height="60"
-            Grid.Row="4"
-            Grid.ColumnSpan="2"
-            Margin="-300,0,0,0">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="30"></Setter>
-                </Style>
-            </Button.Resources>
-        </Button>
-        <Button
+            Height="50">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button
             Style="{DynamicResource ButtonStyle}"
             Content="Отмена"
             Name="BtnCancel"
@@ -62,13 +129,33 @@
             Foreground="White"
             FontSize="20"
             Width="250"
-            Height="60"
+            Height="50"
+                Margin="0 10 0 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+        <Button
             Grid.Row="4"
             Grid.ColumnSpan="2"
-            Margin="300,0,0,0">
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="50 0 0 0"
+            Style="{DynamicResource ButtonStyle}"
+            Content="Добавить товар"
+            Name="BtnAddTovar"
+            Click="BtnAddTovar_Click"
+            Background="Black"
+            Foreground="White"
+            FontSize="20"
+            Width="250"
+            Height="50">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="30"></Setter>
+                    <Setter Property="CornerRadius" Value="15"></Setter>
                 </Style>
             </Button.Resources>
         </Button>

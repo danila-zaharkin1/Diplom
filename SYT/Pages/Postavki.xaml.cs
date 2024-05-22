@@ -27,7 +27,9 @@ namespace SYT.Pages
         public Postavki()
         {
             InitializeComponent();
-            PostavkiList.ItemsSource = db.Supplies.OrderBy(s => s.Number).ToList();
+            PostavkiList.ItemsSource = null;
+            PostavkiList.Items.Clear(); 
+            PostavkiList.ItemsSource = db.Supplies.OrderBy(s => s.Number).ToList();             
         }
 
         private void BtnProduct_Click(object sender, RoutedEventArgs e)
@@ -55,16 +57,30 @@ namespace SYT.Pages
 
         private void DtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItem = PostavkiList.SelectedItem as Supplies;
-            if (selectedItem != null)
+            // Получаем выбранную поставку
+            var selectedSupply = (Supplies)PostavkiList.SelectedItem;
+            if (selectedSupply != null)
             {
-                Supplies itemToDelete = db.Supplies.FirstOrDefault(t => t.Supply_Number == selectedItem.Supply_Number);
-                if (itemToDelete != null)
+                // Находим поставку для удаления по Supply_Number
+                var supplyToDelete = db.Supplies.Include("Products")
+                                               .FirstOrDefault(s => s.Supply_Number == selectedSupply.Supply_Number);
+                if (supplyToDelete != null)
                 {
-                    db.Supplies.Remove(itemToDelete);
+                    // Удаляем все товары, связанные с этой поставкой
+                    db.Products.RemoveRange(supplyToDelete.Products);
+
+                    // Удаляем саму поставку
+                    db.Supplies.Remove(supplyToDelete);
+
+                    // Сохраняем изменения
                     db.SaveChanges();
-                    MessageBox.Show("Товар успешно удален");
+
+                    MessageBox.Show("Поставка успешно удалена.");
                 }
+            }
+            else
+            {
+                MessageBox.Show("Выберите поставку для удаления.");
             }
             PostavkiList.ItemsSource = new SYTEntities().Supplies.ToList();
         }
@@ -82,6 +98,33 @@ namespace SYT.Pages
                 }
             }
             PostavkiList.ItemsSource = new SYTEntities().Supplies.ToList();
+        }
+
+        private void BtnDeteils_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем выбранную поставку
+            Supplies selectedSupplyItem = PostavkiList.SelectedItem as Supplies;
+
+            if (selectedSupplyItem != null)
+            {
+                using (var db = new SYTEntities())
+                {
+                    // Получаем товары в выбранной поставке
+                    var productsInSupply = db.Products
+                                              .Where(p => p.Supply_Number == selectedSupplyItem.Supply_Number)
+                                              .OrderBy(p => p.Barcode)
+                                              .ToList();
+
+                    // Очищаем список товаров
+                    TovariList.Items.Clear();
+
+                    // Добавляем товары в список товаров
+                    foreach (var product in productsInSupply)
+                    {
+                        TovariList.Items.Add(product);
+                    }
+                }
+            }
         }
     }
 }
